@@ -1,16 +1,37 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Registration = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
 
+  const { signinUser } = useAuth();
+
   const onSubmit = (data) => {
-    console.log(data);
+    const { email, password } = data;
+
+    signinUser(email, password)
+      .then((result) => {
+        if (result.user) {
+          Swal.fire({
+            title: "Error!",
+            text: "Do you want to continue",
+            icon: "error",
+            confirmButtonText: "Cool",
+          });
+        }
+        reset();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   return (
     <div>
@@ -74,10 +95,13 @@ const Registration = () => {
             </form>
             <div className="px-5 pb-2">
               <p>
-                New to Avada?{" "}
-                <Link className="btn-link text-primary font-bold" to={"/login"}>
-                  Create Account
-                </Link>{" "}
+                If You Registration
+                <Link
+                  className="btn-link text-primary font-bold ml-2"
+                  to={"/login"}
+                >
+                  Please Login
+                </Link>
               </p>
             </div>
           </div>
