@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink } from "react-router";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
+  const { user } = useAuth();
+
+  const [useropen, setUseropen] = useState(false);
   const navItem = (
     <>
       <li className="lg:ml-4 mt-4 lg:mt-0">
@@ -65,15 +69,38 @@ const Navbar = () => {
               {navItem}
             </ul>
           </div>
-          <NavLink className={'btn btn-ghost'} to={'/'}>F tour</NavLink>
+          <NavLink className={"btn btn-ghost"} to={"/"}>
+            F tour
+          </NavLink>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItem}</ul>
         </div>
         <div className="navbar-end">
-          <Link className="btn btn-primary" to={"/login"}>
-            Log in
-          </Link>
+          {user ? (
+            <div onClick={() => setUseropen(!useropen)} className="avatar">
+              <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2 cursor-pointer">
+                <img
+                  src={
+                    user.photoURL ||
+                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  }
+                />
+              </div>
+            </div>
+          ) : (
+            <Link className="btn btn-primary" to={"/login"}>
+              Log in
+            </Link>
+          )}
+
+
+          {/* user open */}
+
+          <div className={`${useropen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"} absolute h-[100px] bg-amber-700 top-[60px] right-[30px] transition duration-400 rounded-2xl p-3 `}>
+            <h1>Hi {user && user?.displayName}</h1>
+            <button className="btn btn-primary">Log out</button>
+          </div>
         </div>
       </div>
     </div>
