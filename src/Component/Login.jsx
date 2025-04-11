@@ -11,7 +11,7 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const { signinUser, googleSignin } = useAuth();
+  const { signinUser, googleSignin, FacebookSignin } = useAuth();
 
   const onSubmit = (data) => {
     const { email, password } = data;
@@ -27,6 +27,28 @@ const Login = () => {
 
   const handelGoogleSignin = () => {
     googleSignin()
+      .then((result) => {
+        Swal.fire({
+          title: `Hey ${result.user.displayName}`,
+          text: "Your Are successfully Login!",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
+      })
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: `${error.message}`,
+          icon: "error",
+          confirmButtonText: "Cool",
+        });
+      });
+  };
+  const handelFacebookSignin = () => {
+    FacebookSignin()
       .then((result) => {
         Swal.fire({
           title: `Hey ${result.user.displayName}`,
@@ -112,11 +134,13 @@ const Login = () => {
                 </fieldset>
               </div>
             </form>
+
+            {/* google and facebook login button */}
             <div className="divider">OR</div>
-            <div className=" px-4 my-2">
+            <div className=" px-4 my-2 flex gap-4">
               <button
                 onClick={handelGoogleSignin}
-                className="btn bg-[#2F2F2F] text-white border-[#e5e5e5] w-full "
+                className="btn bg-[#2F2F2F] text-white border-[#e5e5e5] flex-1/2 "
               >
                 <svg
                   aria-label="Google logo"
@@ -147,7 +171,28 @@ const Login = () => {
                 </svg>
                 Login with Google
               </button>
+              <button
+                onClick={handelFacebookSignin}
+                className="btn bg-[#1A77F2] text-white border-[#005fd8] flex-1/2"
+              >
+                <svg
+                  aria-label="Facebook logo"
+                  width="16"
+                  height="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 32 32"
+                >
+                  <path
+                    fill="white"
+                    d="M8 12h5V8c0-6 4-7 11-6v5c-4 0-5 0-5 3v2h5l-1 6h-4v12h-6V18H8z"
+                  ></path>
+                </svg>
+                Login with Facebook
+              </button>
             </div>
+            {/* google and facebook login button end */}
+
+            {/* link to signup */}
             <div className="px-5 pb-2">
               <p>
                 New to Avada?{" "}
@@ -159,6 +204,7 @@ const Login = () => {
                 </Link>{" "}
               </p>
             </div>
+            {/* link to signup end */}
           </div>
         </div>
       </div>

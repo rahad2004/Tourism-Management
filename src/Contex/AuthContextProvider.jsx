@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -11,6 +12,7 @@ export const AuthContext = createContext(null);
 
 // firebase provider
 const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
 
 const AuthContextProvider = ({ children }) => {
   //    Sign up user
@@ -29,11 +31,18 @@ const AuthContextProvider = ({ children }) => {
     return signInWithPopup(auth, googleProvider);
   };
 
+  // signin with Facebook
+
+  const FacebookSignin = () => {
+    return signInWithPopup(auth, facebookProvider);
+  };
+
   //   contex data
   const value = {
     signupUser,
     signinUser,
     googleSignin,
+    FacebookSignin,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
