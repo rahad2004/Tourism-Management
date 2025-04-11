@@ -1,15 +1,51 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const { signinUser, googleSignin } = useAuth();
+
   const onSubmit = (data) => {
-    console.log(data);
+    const { email, password } = data;
+
+    signinUser(email, password)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  const handelGoogleSignin = () => {
+    googleSignin()
+      .then((result) => {
+        Swal.fire({
+          title: `Hey ${result.user.displayName}`,
+          text: "Your Are successfully Login!",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
+      })
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: `${error.message}`,
+          icon: "error",
+          confirmButtonText: "Cool",
+        });
+      });
   };
 
   return (
@@ -78,7 +114,10 @@ const Login = () => {
             </form>
             <div className="divider">OR</div>
             <div className=" px-4 my-2">
-              <button className="btn bg-[#2F2F2F] text-white border-[#e5e5e5] w-full ">
+              <button
+                onClick={handelGoogleSignin}
+                className="btn bg-[#2F2F2F] text-white border-[#e5e5e5] w-full "
+              >
                 <svg
                   aria-label="Google logo"
                   width="16"
