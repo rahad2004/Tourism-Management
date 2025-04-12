@@ -6,6 +6,7 @@ import Registration from "../Component/Registration";
 import AllTouristsSpot from "../Component/AllTouristsSpot";
 import AddTouristsSpot from "../Component/AddTouristsSpot";
 import MyAddList from "../Component/MyAddList";
+import ProtectedRoute from "../utilitis/ProtectedRoute";
 
 const Routes = createBrowserRouter([
   {
@@ -30,11 +31,19 @@ const Routes = createBrowserRouter([
       },
       {
         path: "/add-tourists-spots",
-        element: <AddTouristsSpot></AddTouristsSpot>,
+        element: (
+          <ProtectedRoute>
+            <AddTouristsSpot></AddTouristsSpot>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/my-add-spot",
-        element: <MyAddList></MyAddList>,
+        element: (
+          <ProtectedRoute>
+            <MyAddList></MyAddList>
+          </ProtectedRoute>
+        ),
       },
     ],
   },

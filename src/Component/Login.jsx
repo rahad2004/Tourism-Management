@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
   const {
     register,
     handleSubmit,
@@ -18,7 +20,13 @@ const Login = () => {
 
     signinUser(email, password)
       .then((result) => {
-        console.log(result);
+        Swal.fire({
+          title: `Hey ${result.user.displayName}`,
+          text: "Your Are successfully Login!",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         console.log(error.message);
@@ -36,7 +44,7 @@ const Login = () => {
         });
       })
       .then(() => {
-        navigate("/");
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         Swal.fire({
@@ -58,7 +66,7 @@ const Login = () => {
         });
       })
       .then(() => {
-        navigate("/");
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         Swal.fire({

@@ -13,22 +13,29 @@ const Registration = () => {
     reset,
   } = useForm();
 
-  const { signupUser, googleSignin, FacebookSignin } = useAuth();
+  const { signupUser, googleSignin, FacebookSignin, updateUser } = useAuth();
 
   const onSubmit = (data) => {
-    const { email, password } = data;
+    const { email, password, name, photo } = data;
 
     signupUser(email, password)
       .then((result) => {
-        if (result.user) {
-          Swal.fire({
-            title: "Error!",
-            text: "Do you want to continue",
-            icon: "error",
-            confirmButtonText: "Cool",
+        updateUser({ displayName: name, photoURL: photo })
+          .then((result) => {
+            if (result.user) {
+              Swal.fire({
+                title: "Error!",
+                text: "Do you want to continue",
+                icon: "error",
+                confirmButtonText: "Cool",
+              });
+            }
+          })
+          .catch((error) => {
+            console.log(error.message);
           });
-        }
         reset();
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -62,7 +69,7 @@ const Registration = () => {
 
   // facebook signup
   const handelFacebookSignin = () => {
-    googleSignin()
+    FacebookSignin()
       .then((result) => {
         Swal.fire({
           title: `Hey ${result.user.displayName}`,
@@ -100,6 +107,24 @@ const Registration = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="card-body">
                 <fieldset className="fieldset">
+                  <label className="fieldset-label">Name</label>
+                  <input
+                    {...register("name", {
+                      required: "Name is required",
+                      maxLength: {
+                        value: 80,
+                        message: "Maximum length is 80",
+                      },
+                    })}
+                    type="text"
+                    className="input"
+                    placeholder="Enter Your Name"
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.name.message}
+                    </p>
+                  )}
                   <label className="fieldset-label">Email</label>
                   <input
                     {...register("email", {
@@ -116,6 +141,20 @@ const Registration = () => {
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">
                       {errors.email.message}
+                    </p>
+                  )}
+                  <label className="fieldset-label">Photo Url</label>
+                  <input
+                    {...register("photo", {
+                      required: "Photo url is required",
+                    })}
+                    type="text"
+                    className="input"
+                    placeholder="Email"
+                  />
+                  {errors.photo && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.photo.message}
                     </p>
                   )}
 

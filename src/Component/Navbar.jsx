@@ -1,11 +1,29 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
-  const { user } = useAuth();
+  const { user, signout } = useAuth();
+  const navigate = useNavigate();
 
   const [useropen, setUseropen] = useState(false);
+  const handelLogout = () => {
+    signout()
+      .then(() => {
+        Swal.fire({
+          title: `Hey ${user.displayName}`,
+          text: "You Are Succesfully Logout",
+          icon: "info",
+          confirmButtonText: "Ok",
+        });
+        setUseropen(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
   const navItem = (
     <>
       <li className="lg:ml-4 mt-4 lg:mt-0">
@@ -80,7 +98,7 @@ const Navbar = () => {
           {user ? (
             <div onClick={() => setUseropen(!useropen)} className="avatar">
               <div className="ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2 cursor-pointer">
-                <img
+                <img 
                   src={
                     user.photoURL ||
                     "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
@@ -94,12 +112,31 @@ const Navbar = () => {
             </Link>
           )}
 
-
           {/* user open */}
 
-          <div className={`${useropen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"} absolute h-[100px] bg-amber-700 top-[60px] right-[30px] transition duration-400 rounded-2xl p-3 `}>
-            <h1>Hi {user && user?.displayName}</h1>
-            <button className="btn btn-primary">Log out</button>
+          <div
+            className={`${
+              useropen
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 -translate-y-4 pointer-events-none"
+            } absolute h-[100px] bg-amber-700 top-[60px] right-[30px] transition duration-400 rounded-2xl p-3 h-[300px] `}
+          >
+            <div className="flex flex-col justify-center items-center gap-2">
+              <img
+                className="rounded-full border-2 border-blue-500 p-[3px] w-[100px]"
+                src={user?.photoURL}
+                alt=""
+              />
+              <h1>Hey {user && user?.displayName}</h1>
+            </div>
+
+            <div className="divider"></div>
+            <div className="flex flex-col gap-3">
+              <button className="btn btn-primary">View Profile</button>
+              <button onClick={handelLogout} className="btn btn-primary">
+                Log out
+              </button>
+            </div>
           </div>
         </div>
       </div>
