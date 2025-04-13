@@ -14,6 +14,7 @@ const Home = () => {
       <div>
         <Swiper
           navigation={true}
+          loop={true}
           pagination={{ clickable: true }}
           autoplay={true}
           zoom={true}
