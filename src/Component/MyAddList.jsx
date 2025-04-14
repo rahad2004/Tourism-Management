@@ -1,10 +1,48 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const MyAddList = () => {
   const { user } = useAuth();
   const [mySpots, setMyspots] = useState([]);
+
   const email = user.email;
+
+  const handelAddPlace = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/tourists-spots/${id}`,
+          {
+            method: "DELETE",
+          }
+        );
+        const data = await response.json();
+
+        if (data.success) {
+          setMyspots((prev) => prev.filter((spot) => spot._id !== id));
+
+          Swal.fire({
+            title: "Deleted!",
+            text: `${data.message}`,
+            icon: "success",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   useEffect(() => {
     const loaddata = async () => {
@@ -14,7 +52,7 @@ const MyAddList = () => {
         );
 
         const data = await response.json();
-        setMyspots(data);
+        setMyspots(data.data);
       } catch (error) {
         console.log(error);
       }
@@ -76,7 +114,7 @@ const MyAddList = () => {
                   </button>
                   <button
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-                    onClick={() => console.log(spot._id)}
+                    onClick={() => handelAddPlace(spot._id)}
                   >
                     Delete
                   </button>
