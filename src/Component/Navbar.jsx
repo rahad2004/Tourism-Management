@@ -117,7 +117,7 @@ const Navbar = () => {
           <div
             className={`${
               useropen
-                ? "opacity-100 translate-y-0"
+                ? "opacity-100 translate-y-0 z-20"
                 : "opacity-0 -translate-y-4 pointer-events-none"
             } absolute h-[100px] bg-amber-700 top-[60px] right-[30px] transition duration-400 rounded-2xl p-3 h-[300px] `}
           >

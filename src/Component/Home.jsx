@@ -17,8 +17,7 @@ const Home = () => {
           loop={true}
           pagination={{ clickable: true }}
           autoplay={true}
-          zoom={true}
-          modules={[Navigation, Pagination, Autoplay, Zoom]}
+          modules={[Navigation, Pagination, Autoplay]}
           className="mySwiper"
         >
           <SwiperSlide>

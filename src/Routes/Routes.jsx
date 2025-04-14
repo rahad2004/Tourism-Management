@@ -7,6 +7,8 @@ import AllTouristsSpot from "../Component/AllTouristsSpot";
 import AddTouristsSpot from "../Component/AddTouristsSpot";
 import MyAddList from "../Component/MyAddList";
 import ProtectedRoute from "../utilitis/ProtectedRoute";
+import ViewDitails from "../Component/ViewDitails";
+import Error from "../Component/Error";
 
 const Routes = createBrowserRouter([
   {
@@ -45,8 +47,20 @@ const Routes = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/tourists-spots/:id",
+        element: (
+          <ProtectedRoute>
+            <ViewDitails></ViewDitails>
+          </ProtectedRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/tourists-spots/${params.id}`),
+      },
     ],
+    errorElement:<Error></Error>
   },
+  
 ]);
 
 export default Routes;

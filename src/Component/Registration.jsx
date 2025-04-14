@@ -166,6 +166,12 @@ const Registration = () => {
                         value: 6,
                         message: "Minimum length is 6 characters",
                       },
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).+$/,
+                        message:
+                          "Must Useed capital and small letter and Special Simbol",
+                      },
                     })}
                     type="password"
                     className="input"

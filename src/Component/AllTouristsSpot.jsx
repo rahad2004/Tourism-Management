@@ -27,15 +27,16 @@ const AllTouristsSpot = () => {
     fetchSpot();
   }, [sortOrder]);
 
-  console.log(spots);
-
   return (
     <div>
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-bold">All Tourist Spots</h1>
           <form>
-            <select {...register("sort")} className="select select-bordered">
+            <select
+              {...register("sort")}
+              className="select select-bordered border-none"
+            >
               <option value="">Sort by Cost</option>
               <option value="asc">Low to High</option>
               <option value="desc">High to Low</option>
@@ -56,7 +57,7 @@ const AllTouristsSpot = () => {
                 <p>Country: {spot.countryName}</p>
                 <p>Cost: {spot.avrageCost} Taka</p>
                 <button
-                  onClick={() => navigate(`/spot/${spot._id}`)}
+                  onClick={() => navigate(`/tourists-spots/${spot._id}`)}
                   className="mt-3 btn btn-primary"
                 >
                   View Details

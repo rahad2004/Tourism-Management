@@ -7,7 +7,7 @@ const AddTouristsSpot = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -27,18 +27,21 @@ const AddTouristsSpot = () => {
       });
 
       const message = await response.json();
+      console.log(message);
+      // {success: false, message: 'this palce is allready exists'}
 
-      if (message.insertedId) {
+      if (message) {
         Swal.fire({
-          title: "Success!",
-          text: "Tour Palce Add successfully",
-          icon: "success",
+          title: `${message.success ? "Success" : "Unsuccess"}`,
+          text: `${message.message}`,
+          icon: `${message.success ? "success" : "error"}`,
           confirmButtonText: "Ok",
         });
       }
     } catch (error) {
       console.log(error);
     }
+    reset();
 
     console.log(Fulldata);
   };
@@ -55,15 +58,21 @@ const AddTouristsSpot = () => {
                   htmlFor="palaceName"
                   className="text-gray-700 font-medium"
                 >
-                  Tourists Spot Name
+                  Tourists Spot Name <span className="text-red-600">*</span>
                 </label>
                 <input
-                  {...register("palceName")}
+                  {...register("palceName", {
+                    required: {
+                      value: true,
+                      message: "This field is required",
+                    },
+                  })}
                   id="palaceName"
                   type="text"
                   placeholder="Enter the Palace Name"
                   className="input w-full"
                 />
+                {errors.palceName && <p className="text-red-600">{errors.palceName.message}</p>}
               </div>
               <div className="flex flex-col gap-2">
                 <label

@@ -29,7 +29,17 @@ const Login = () => {
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(error.code);
+        Swal.fire({
+          title: "Hey",
+          text: ` ${
+            error.code === "auth/invalid-credential"
+              ? "Your email or password is incorrect."
+              : "Something went wrong. Please try again."
+          }`,
+          icon: "error",
+          confirmButtonText: "ok",
+        });
       });
   };
 
@@ -117,10 +127,6 @@ const Login = () => {
                   <input
                     {...register("password", {
                       required: "Password is required",
-                      minLength: {
-                        value: 6,
-                        message: "Minimum length is 6 characters",
-                      },
                     })}
                     type="password"
                     className="input"
