@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination, Zoom } from "swiper/modules";
 import "swiper/css";
@@ -9,6 +9,25 @@ import { Link } from "react-router";
 import { FaLocationDot } from "react-icons/fa6";
 
 const Home = () => {
+  const [spots, setSpotS] = useState([]);
+  useEffect(() => {
+    const spotLoad = async () => {
+      const response = await fetch("http://localhost:5000/tourists-spots");
+
+      const resData = await response.json();
+
+      setSpotS(resData);
+    };
+
+    spotLoad();
+  }, []);
+
+  if (spots.length > 6) {
+    const slice = spots.slice(0, 5);
+    setSpotS(slice);
+  }
+
+  console.log(spots);
   return (
     <div>
       <div>
@@ -86,6 +105,27 @@ const Home = () => {
             </div>
           </SwiperSlide>
         </Swiper>
+      </div>
+      <div className="tourists-spots-section container mx-auto">
+        <h2 className="text-center text-2xl font-bold my-5">Tourist Spots</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Example of a tourist spot card */}
+          <div className="card">
+            <img
+              src="image_url"
+              alt="Spot Name"
+              className="w-full h-40 object-cover"
+            />
+            <div className="p-4">
+              <h3 className="font-bold text-xl">Spot Name</h3>
+              <p>Country Name</p>
+              <Link to="/tourists-spot-detail" className="btn btn-primary mt-3">
+                View Details
+              </Link>
+            </div>
+          </div>
+          {/* Repeat this for more spots */}
+        </div>
       </div>
     </div>
   );

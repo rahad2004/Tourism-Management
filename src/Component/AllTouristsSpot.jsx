@@ -48,7 +48,7 @@ const AllTouristsSpot = () => {
           {spots?.map((spot) => (
             <div key={spot._id} className="card bg-white shadow-md p-4">
               <img
-                src={spot.ImageURL}
+                src={spot.ImageURL || null}
                 alt={spot.palceName}
                 className="h-48 w-full object-cover rounded-md"
               />

@@ -9,11 +9,13 @@ import MyAddList from "../Component/MyAddList";
 import ProtectedRoute from "../utilitis/ProtectedRoute";
 import ViewDitails from "../Component/ViewDitails";
 import Error from "../Component/Error";
+import Updatespot from "../Component/Updatespot";
 
 const Routes = createBrowserRouter([
   {
     path: "/",
     element: <Root></Root>,
+    errorElement: <Error></Error>,
     children: [
       {
         path: "/",
@@ -30,6 +32,14 @@ const Routes = createBrowserRouter([
       {
         path: "/tourists-spots",
         element: <AllTouristsSpot></AllTouristsSpot>,
+      },
+      {
+        path: "/update-spot/:id",
+        element: (
+          <ProtectedRoute>
+            <Updatespot></Updatespot>
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/add-tourists-spots",
@@ -58,9 +68,7 @@ const Routes = createBrowserRouter([
           fetch(`http://localhost:5000/tourists-spots/${params.id}`),
       },
     ],
-    errorElement:<Error></Error>
   },
-  
 ]);
 
 export default Routes;

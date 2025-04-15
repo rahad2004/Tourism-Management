@@ -11,13 +11,13 @@ const ViewDitails = () => {
         {/* Left: Image */}
         <div className="relative rounded-2xl overflow-hidden shadow-xl h-[300px] md:h-[500px]">
           <img
-            src={spot.ImageURL}
-            alt={spot.placeName}
+            src={spot.data.ImageURL}
+            alt={spot.data.placeName}
             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
           <h1 className="absolute bottom-6 left-6 text-4xl font-bold text-white drop-shadow-md">
-            {spot.placeName}
+            {spot.data.placeName}
           </h1>
         </div>
 
@@ -25,22 +25,22 @@ const ViewDitails = () => {
         <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-[16px] leading-relaxed">
             <p>
-              <strong>🌍 Country:</strong> {spot.countryName}
+              <strong>🌍 Country:</strong> {spot.data.countryName}
             </p>
             <p>
-              <strong>📍 Location:</strong> {spot.location}
+              <strong>📍 Location:</strong> {spot.data.location}
             </p>
             <p>
-              <strong>💰 Avg. Cost:</strong> {spot.avrageCost} Taka
+              <strong>💰 Avg. Cost:</strong> {spot.data.avrageCost} Taka
             </p>
             <p>
-              <strong>🕒 Travel Time:</strong> {spot.TravelTime}
+              <strong>🕒 Travel Time:</strong> {spot.data.TravelTime}
             </p>
             <p>
-              <strong>📅 Seasonality:</strong> {spot.seasonality}
+              <strong>📅 Seasonality:</strong> {spot.data.seasonality}
             </p>
             <p>
-              <strong>👥 Visitors/Year:</strong> {spot.TotalVisitorsPerYear}
+              <strong>👥 Visitors/Year:</strong> {spot.data.TotalVisitorsPerYear}
             </p>
           </div>
 
@@ -48,7 +48,7 @@ const ViewDitails = () => {
             <h2 className="text-xl font-semibold text-gray-800 mb-2 border-b pb-1 inline-block">
               📝 Description
             </h2>
-            <p className="text-gray-600">{spot.sortDescription}</p>
+            <p className="text-gray-600">{spot.data.sortDescription}</p>
           </div>
 
           {/* Optional: Button */}

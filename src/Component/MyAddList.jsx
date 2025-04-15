@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const MyAddList = () => {
   const { user } = useAuth();
   const [mySpots, setMyspots] = useState([]);
 
   const email = user.email;
+
+  useEffect(() => {
+    const loaddata = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/my-sports?email=${email}`
+        );
+
+        const data = await response.json();
+        setMyspots(data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loaddata();
+  }, [email]);
 
   const handelAddPlace = async (id) => {
     const result = await Swal.fire({
@@ -43,23 +60,6 @@ const MyAddList = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const loaddata = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/my-sports?email=${email}`
-        );
-
-        const data = await response.json();
-        setMyspots(data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loaddata();
-  }, [email]);
-  console.log(mySpots);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -106,12 +106,12 @@ const MyAddList = () => {
                 <td className="px-4 py-2">{spot.location}</td>
                 <td className="px-4 py-2">{spot.avrageCost}Taka</td>
                 <td className="px-4 py-2  space-y-4 md:space-x-2">
-                  <button
+                  <Link
+                    to={`/update-spot/${spot._id}`}
                     className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition"
-                    onClick={() => console.log("Update", spot._id)}
                   >
                     Update
-                  </button>
+                  </Link>
                   <button
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                     onClick={() => handelAddPlace(spot._id)}
