@@ -8,6 +8,7 @@ const Updatespot = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
   const params = useParams();
@@ -29,7 +30,9 @@ const Updatespot = () => {
   }, [params.id, reset]);
 
   const updatePlace = async (data) => {
+    data.avrageCost = parseInt(data.avrageCost);
     console.log(data);
+
     try {
       const response = await fetch(
         `http://localhost:5000/tourists-spots/${params.id}`,

@@ -14,7 +14,10 @@ const AddTouristsSpot = () => {
   const { user } = useAuth();
 
   const handelAddPlace = async (data) => {
+    const { countryName } = data;
+    console.log(countryName);
     const email = user.email;
+    data.avrageCost = parseInt(data.avrageCost);
     const Fulldata = { ...data, email };
 
     try {
@@ -72,7 +75,9 @@ const AddTouristsSpot = () => {
                   placeholder="Enter the Palace Name"
                   className="input w-full"
                 />
-                {errors.palceName && <p className="text-red-600">{errors.palceName.message}</p>}
+                {errors.palceName && (
+                  <p className="text-red-600">{errors.palceName.message}</p>
+                )}
               </div>
               <div className="flex flex-col gap-2">
                 <label

@@ -10,6 +10,8 @@ import ProtectedRoute from "../utilitis/ProtectedRoute";
 import ViewDitails from "../Component/ViewDitails";
 import Error from "../Component/Error";
 import Updatespot from "../Component/Updatespot";
+import CountryCard from "../Component/CountryCard";
+import CountySpot from "../Component/CountySpot";
 
 const Routes = createBrowserRouter([
   {
@@ -66,6 +68,12 @@ const Routes = createBrowserRouter([
         ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/tourists-spots/${params.id}`),
+      },
+      {
+        path: "/tourists-spots/country/:country",
+        element: <CountySpot></CountySpot>,
+        loader: ({params}) =>
+          fetch(`http://localhost:5000/tourists-spots/country/${params.country}`),
       },
     ],
   },

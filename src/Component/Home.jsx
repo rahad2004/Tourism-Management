@@ -7,9 +7,11 @@ import "swiper/css/pagination";
 import "swiper/css/zoom";
 import { Link } from "react-router";
 import { FaLocationDot } from "react-icons/fa6";
+import CountryCard from "./CountryCard";
 
 const Home = () => {
   const [spots, setSpotS] = useState([]);
+  const [countries, setCountries] = useState([]);
   useEffect(() => {
     const spotLoad = async () => {
       const response = await fetch("http://localhost:5000/tourists-spots");
@@ -22,15 +24,27 @@ const Home = () => {
     spotLoad();
   }, []);
 
+  // country data load
+  useEffect(() => {
+    const countryLoad = async () => {
+      const response = await fetch("http://localhost:5000/countries");
+
+      const resData = await response.json();
+
+      setCountries(resData);
+    };
+
+    countryLoad();
+  }, []);
+
   if (spots.length > 6) {
-    const slice = spots.slice(0, 5);
+    const slice = spots.slice(0, 6);
     setSpotS(slice);
   }
 
-  console.log(spots);
   return (
     <div>
-      <div>
+      <section>
         <Swiper
           navigation={true}
           loop={true}
@@ -105,28 +119,43 @@ const Home = () => {
             </div>
           </SwiperSlide>
         </Swiper>
-      </div>
-      <div className="tourists-spots-section container mx-auto">
+      </section>
+      {/* leatest spot section */}
+      <section className="tourists-spots-section container mx-auto">
         <h2 className="text-center text-2xl font-bold my-5">Tourist Spots</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Example of a tourist spot card */}
-          <div className="card">
-            <img
-              src="image_url"
-              alt="Spot Name"
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="font-bold text-xl">Spot Name</h3>
-              <p>Country Name</p>
-              <Link to="/tourists-spot-detail" className="btn btn-primary mt-3">
-                View Details
-              </Link>
+          {spots.map((spot) => (
+            <div className="card border rounded-2xl border-2 border-amber-50 shadow-2xl">
+              <img
+                src={spot.ImageURL}
+                alt="Spot Name"
+                className="w-full h-full object-cover rounded-t-2xl"
+              />
+              <div className="p-4">
+                <h3 className="font-bold text-xl">{spot.palceName}</h3>
+                <p>Country : {spot.countryName}</p>
+                <p>{spot.avrageCost}</p>
+                <Link
+                  to={`/tourists-spots/${spot._id}`}
+                  className="btn btn-primary mt-3"
+                >
+                  View Details
+                </Link>
+              </div>
             </div>
-          </div>
-          {/* Repeat this for more spots */}
+          ))}
         </div>
-      </div>
+      </section>
+
+      {/* country section  */}
+      <section className="my-10 px-4">
+        <h1 className="text-3xl font-bold text-center mb-6">Countries</h1>
+        <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {countries.map((country) => (
+            <CountryCard key={country._id} country={country}></CountryCard>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
